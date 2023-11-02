@@ -1,0 +1,8 @@
+url: rest
+port: 591
+credentials:
+  usernames:
+    demo:
+      email: demo1@stempora.com
+      name: Demo1
+      password: demo1 # To be replaced with hashed password
