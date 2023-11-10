@@ -93,23 +93,25 @@ def main(config):
             idx = 0
             while idx < len(uploaded_files):
                 with cols[idx]:
-                    # st.image(uploaded_files[idx])
-                    mp_encoder = MultipartEncoder(
-                        fields={"file": (uploaded_files[idx].name, uploaded_files[idx], uploaded_files[idx].type)}
-                    )
-                    url = f"http://{config['url']}:{config['port']}{detection_type}"
-                    response = requests.post(
-                        url, data=mp_encoder, headers={"Content-Type": mp_encoder.content_type}
-                    )
-                    json_results = response.json()
-                    try:
-                        image = base64str_to_PILImage(json_results["image"])
-                        st.image(image, caption="Detections Visualization")
-                        if detection_type == '/detect/all_screws':
-                            image_eb = base64str_to_PILImage(json_results["image_em"])
-                            st.image(image_eb, caption="Detections Visualization")
-                    except:
-                        pass
+                    # changed code for sorting table
+                    key_idx = 0
+                    st.image(uploaded_files[idx])
+                    # mp_encoder = MultipartEncoder(
+                    #     fields={"file": (uploaded_files[idx].name, uploaded_files[idx], uploaded_files[idx].type)}
+                    # )
+                    # url = f"http://{config['url']}:{config['port']}{detection_type}"
+                    # response = requests.post(
+                    #     url, data=mp_encoder, headers={"Content-Type": mp_encoder.content_type}
+                    # )
+                    # json_results = response.json()
+                    # try:
+                    #     image = base64str_to_PILImage(json_results["image"])
+                    #     st.image(image, caption="Detections Visualization")
+                    #     if detection_type == '/detect/all_screws':
+                    #         image_eb = base64str_to_PILImage(json_results["image_em"])
+                    #         st.image(image_eb, caption="Detections Visualization")
+                    # except:
+                    #     pass
                     
                     if detection_type == "/cartier-tool":
                         # Brand
@@ -151,18 +153,20 @@ def main(config):
                         st.text("Texts:")
                         text_result = ["Cartier", "Automatic", "Stainless Steel"]
                         text_table = pd.DataFrame(data = {"Text": text_result})
-                        st.table(text_table)
+                        # changed code for sorting table
+                        st.data_editor(text_table, use_container_width=True, key=f'{uploaded_files[idx].file_id}_text_{str(key_idx + 1)}') 
 
                         # Screws
                         st.text("Screws:")
                         screw_angle = ["30", "40", "65"]
                         screw_number = ["S0", "S2", "S1"]
                         screw_table = pd.DataFrame(data = {"Angle": screw_angle, "Screw Number": screw_number})
-                        st.table(screw_table)
+                        # changed code for sorting table
+                        st.data_editor(screw_table, use_container_width=True, key=f'{uploaded_files[idx].file_id}_screw_{str(key_idx + 1)}')
 
                     else:
                         st.text("Result")            
-                        st.json(json_results)
+                        # st.json(json_results)
                 idx += 1
     
 
