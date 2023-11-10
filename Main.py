@@ -96,22 +96,22 @@ def main(config):
                     # changed code for sorting table
                     key_idx = 0
                     st.image(uploaded_files[idx])
-                    # mp_encoder = MultipartEncoder(
-                    #     fields={"file": (uploaded_files[idx].name, uploaded_files[idx], uploaded_files[idx].type)}
-                    # )
-                    # url = f"http://{config['url']}:{config['port']}{detection_type}"
-                    # response = requests.post(
-                    #     url, data=mp_encoder, headers={"Content-Type": mp_encoder.content_type}
-                    # )
-                    # json_results = response.json()
-                    # try:
-                    #     image = base64str_to_PILImage(json_results["image"])
-                    #     st.image(image, caption="Detections Visualization")
-                    #     if detection_type == '/detect/all_screws':
-                    #         image_eb = base64str_to_PILImage(json_results["image_em"])
-                    #         st.image(image_eb, caption="Detections Visualization")
-                    # except:
-                    #     pass
+                    mp_encoder = MultipartEncoder(
+                        fields={"file": (uploaded_files[idx].name, uploaded_files[idx], uploaded_files[idx].type)}
+                    )
+                    url = f"http://{config['url']}:{config['port']}{detection_type}"
+                    response = requests.post(
+                        url, data=mp_encoder, headers={"Content-Type": mp_encoder.content_type}
+                    )
+                    json_results = response.json()
+                    try:
+                        image = base64str_to_PILImage(json_results["image"])
+                        st.image(image, caption="Detections Visualization")
+                        if detection_type == '/detect/all_screws':
+                            image_eb = base64str_to_PILImage(json_results["image_em"])
+                            st.image(image_eb, caption="Detections Visualization")
+                    except:
+                        pass
                     
                     if detection_type == "/cartier-tool":
                         # Brand
@@ -166,7 +166,7 @@ def main(config):
 
                     else:
                         st.text("Result")            
-                        # st.json(json_results)
+                        st.json(json_results)
                 idx += 1
     
 
